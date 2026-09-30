@@ -1,0 +1,709 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);color:var(--text-primary);font-size:14px}
+.wrap{padding:1rem 0 2rem}
+
+/* Tabs */
+.tabs{display:flex;gap:4px;margin-bottom:1.25rem;border-bottom:0.5px solid var(--border);padding-bottom:0}
+.tab{padding:8px 16px;font-size:13px;font-weight:500;cursor:pointer;border-radius:6px 6px 0 0;color:var(--text-secondary);border:none;background:none;border-bottom:2px solid transparent;transition:all .15s}
+.tab.active{color:var(--text-accent);border-bottom:2px solid var(--text-accent);background:var(--bg-accent)}
+.tab-panel{display:none}.tab-panel.active{display:block}
+
+/* Cards */
+.card{background:var(--surface-2);border:0.5px solid var(--border);border-radius:10px;padding:.9rem 1rem;margin-bottom:.65rem}
+.card-accent-blue{border-left:3px solid #378ADD}
+.card-accent-green{border-left:3px solid #1D9E75}
+.card-accent-amber{border-left:3px solid #BA7517}
+.card-accent-purple{border-left:3px solid #7F77DD}
+.card-accent-coral{border-left:3px solid #D85A30}
+.card-accent-gray{border-left:3px solid var(--border-strong)}
+
+/* Step list */
+.step{display:flex;gap:10px;align-items:flex-start;margin-bottom:.75rem}
+.step-num{display:flex;align-items:center;justify-content:center;min-width:24px;height:24px;border-radius:50%;font-size:11px;font-weight:500;flex-shrink:0}
+.num-blue{background:var(--bg-accent);color:var(--text-accent)}
+.num-green{background:var(--bg-success);color:var(--text-success)}
+.num-amber{background:var(--bg-warning);color:var(--text-warning)}
+.num-purple{background:#EEEDFE;color:#534AB7}
+.step-body{font-size:13px;color:var(--text-secondary);line-height:1.6}
+.step-body strong{color:var(--text-primary);font-weight:500}
+.step-body code{font-family:var(--font-mono);font-size:11px;background:var(--surface-1);border:0.5px solid var(--border-strong);border-radius:3px;padding:1px 5px;color:var(--text-secondary)}
+
+/* Section headers */
+.section-hd{font-size:12px;font-weight:500;color:var(--text-muted);letter-spacing:.05em;margin:.8rem 0 .5rem}
+
+/* Badge */
+.badge{display:inline-block;font-size:10px;font-weight:500;padding:2px 7px;border-radius:5px;margin-right:4px;vertical-align:middle}
+.b-win{background:var(--bg-success);color:var(--text-success)}
+.b-warn{background:var(--bg-warning);color:var(--text-warning)}
+.b-info{background:var(--bg-accent);color:var(--text-accent)}
+.b-gray{background:var(--surface-1);color:var(--text-secondary);border:0.5px solid var(--border)}
+
+/* Code block */
+.code-block{background:var(--surface-1);border:0.5px solid var(--border-strong);border-radius:8px;padding:.75rem 1rem;font-family:var(--font-mono);font-size:11px;line-height:1.7;color:var(--text-secondary);white-space:pre-wrap;word-break:break-all;position:relative;margin-bottom:.65rem}
+.copy-btn{position:absolute;top:8px;right:8px;font-size:11px;padding:3px 9px;border-radius:5px;border:0.5px solid var(--border-strong);background:var(--surface-2);color:var(--text-secondary);cursor:pointer}
+.copy-btn:hover{background:var(--surface-1)}
+
+/* Grid */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:.65rem}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.65rem}
+
+/* Prompt area */
+.prompt-wrap{background:var(--surface-1);border:0.5px solid var(--border-strong);border-radius:10px;padding:1rem;font-size:12.5px;line-height:1.8;color:var(--text-primary);white-space:pre-wrap;word-break:break-word;position:relative;max-height:520px;overflow-y:auto}
+.prompt-copy{display:block;width:100%;padding:9px;font-size:13px;font-weight:500;border:0.5px solid var(--border-accent);border-radius:7px;background:var(--bg-accent);color:var(--text-accent);cursor:pointer;margin-top:.65rem;text-align:center}
+.prompt-copy:hover{background:var(--fill-accent);color:#fff}
+
+/* Checklist */
+.chk{display:flex;gap:8px;align-items:flex-start;margin-bottom:.4rem;font-size:13px;color:var(--text-secondary);line-height:1.5}
+.chk-box{min-width:16px;height:16px;border:1.5px solid var(--border-strong);border-radius:3px;margin-top:1px;flex-shrink:0}
+
+/* Timeline */
+.tl{position:relative;padding-left:18px;border-left:1.5px solid var(--border-strong)}
+.tl-item{position:relative;margin-bottom:.9rem}
+.tl-dot{position:absolute;left:-5px;top:4px;width:9px;height:9px;border-radius:50%;background:var(--text-accent);border:1.5px solid var(--surface-2)}
+.tl-date{font-size:11px;color:var(--text-muted);font-weight:500}
+.tl-label{font-size:13px;font-weight:500;color:var(--text-primary);margin:.1rem 0 .2rem}
+.tl-body{font-size:12px;color:var(--text-secondary);line-height:1.5}
+
+/* Highlight */
+.hl-green{background:var(--bg-success);border:0.5px solid var(--border-success);border-radius:8px;padding:.7rem .9rem;margin-bottom:.65rem}
+.hl-warn{background:var(--bg-warning);border:0.5px solid var(--border-warning);border-radius:8px;padding:.7rem .9rem;margin-bottom:.65rem}
+.hl-blue{background:var(--bg-accent);border:0.5px solid var(--border-accent);border-radius:8px;padding:.7rem .9rem;margin-bottom:.65rem}
+.hl-text-g{font-size:12.5px;color:var(--text-success);line-height:1.6}
+.hl-text-w{font-size:12.5px;color:var(--text-warning);line-height:1.6}
+.hl-text-b{font-size:12.5px;color:var(--text-accent);line-height:1.6}
+
+/* Feature table */
+.feat-row{display:flex;justify-content:space-between;align-items:flex-start;padding:.4rem 0;border-bottom:0.5px solid var(--border);font-size:12.5px}
+.feat-row:last-child{border-bottom:none}
+.feat-name{color:var(--text-primary);font-weight:500;min-width:180px}
+.feat-desc{color:var(--text-secondary);flex:1;margin-left:.75rem}
+.feat-api{font-family:var(--font-mono);font-size:10px;color:var(--text-accent);background:var(--bg-accent);padding:1px 5px;border-radius:3px;white-space:nowrap;margin-left:.5rem}
+</style>
+
+<div class="wrap">
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab(0)">🗺 Master Plan</button>
+  <button class="tab" onclick="switchTab(1)">⚙️ Setup Steps</button>
+  <button class="tab" onclick="switchTab(2)">🔧 Cloudinary Features</button>
+  <button class="tab" onclick="switchTab(3)">🤖 Antigravity Prompt</button>
+  <button class="tab" onclick="switchTab(4)">📋 Submission Checklist</button>
+</div>
+
+<!-- TAB 0: MASTER PLAN -->
+<div class="tab-panel active" id="panel-0">
+
+<div class="hl-green">
+  <div class="hl-text-g"><strong>Project: VisualCraft</strong> — AI product photography for Indian D2C sellers. Track 3 (Media-Savvy Startup). Stack: Next.js 14 + Cloudinary + Supabase + Gemini. 19 days to win ₹1,20,000.</div>
+</div>
+
+<div class="section-hd">PHASE 1 — Account setup (Sep 15, Day 1, 2–3 hrs)</div>
+<div class="tl">
+  <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Step 1</div><div class="tl-label">Register on HackIndia</div><div class="tl-body">Go to HackIndia event page → click Participate. All team members register individually with team name "Team Elite" exactly.</div></div>
+  <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Step 2</div><div class="tl-label">Create Cloudinary free account</div><div class="tl-body">cloudinary.com → Sign up free → copy Cloud Name, API Key, API Secret → save in notepad. No credit card needed.</div></div>
+  <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Step 3</div><div class="tl-label">Join WhatsApp group</div><div class="tl-body">Link from the hackathon document. Join only after registration. Pre-event Zoom workshop details come here.</div></div>
+  <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Step 4</div><div class="tl-label">Create GitHub repo</div><div class="tl-body">Use the provided URL: github.com/HackIndiaXYZ/pixels-to-products-cloudinary-ai-hackathon-2026-team-elite — push initial commit with README skeleton.</div></div>
+  <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Step 5</div><div class="tl-label">Create Supabase project</div><div class="tl-body">supabase.com → new project → get URL + anon key. You'll use this for user uploads history + metadata.</div></div>
+</div>
+
+<div class="section-hd">PHASE 2 — Project scaffold with Antigravity (Sep 15–16, Days 1–2)</div>
+<div class="card card-accent-blue">
+  <strong>Use the Antigravity prompt from the "Antigravity Prompt" tab.</strong> It scaffolds the entire Next.js project with all pages, Cloudinary integration, UI components, and API routes. Run it once. Should give you 80% of the base in one shot.
+</div>
+
+<div class="section-hd">PHASE 3 — Core build (Sep 17–21, Days 3–7)</div>
+<div class="tl">
+  <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Day 3</div><div class="tl-label">Upload + background removal pipeline</div><div class="tl-body">Wire CldUploadWidget → Cloudinary Upload API → e_background_removal transformation → show before/after in UI.</div></div>
+  <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Day 4</div><div class="tl-label">Platform presets</div><div class="tl-body">Create named transformations for Instagram (1:1, 1080px), WhatsApp (800×800), Flipkart (500×500 white bg), Facebook Ad (1200×628). Deliver via transformation URL chains.</div></div>
+  <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Day 5</div><div class="tl-label">Auto-tagging + product categorization</div><div class="tl-body">On upload: auto_tagging with confidence threshold 0.6. Show detected tags in UI. Use tags for search/filter.</div></div>
+  <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Day 6</div><div class="tl-label">Search API + gallery</div><div class="tl-body">Use Cloudinary Search API to list user's uploads filtered by tags. Build gallery page with CldImage.</div></div>
+  <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Day 7</div><div class="tl-label">Generative fill for banner format</div><div class="tl-body">Use b_gen_fill to extend product images into landscape banner format (1200×628) for Facebook ads. This is the wow feature.</div></div>
+</div>
+
+<div class="section-hd">PHASE 4 — Polish + depth (Sep 22–28, Days 8–14)</div>
+<div class="tl">
+  <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Day 8–9</div><div class="tl-label">Gemini caption generation</div><div class="tl-body">After auto-tagging: call Gemini API with detected tags → generate 3 product description variants for Instagram/WhatsApp/Flipkart captions. Show in UI next to each platform export.</div></div>
+  <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Day 10–11</div><div class="tl-label">Supabase history + auth</div><div class="tl-body">Store upload_id, cloudinary_public_id, tags, captions, platform URLs in Supabase. Show user's previous uploads. Basic email auth with Supabase Auth.</div></div>
+  <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Day 12–13</div><div class="tl-label">Background replace + style presets</div><div class="tl-body">Use e_gen_background_replace with prompts: "clean white studio", "wooden table", "outdoor market". Let user pick background style. This is second wow feature.</div></div>
+  <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Day 14</div><div class="tl-label">One-click download all</div><div class="tl-body">ZIP all platform variants using JSZip. Download button triggers ZIP of all 5 platform images + captions in .txt file. Super demo-friendly.</div></div>
+</div>
+
+<div class="section-hd">PHASE 5 — Demo + submission (Sep 29 – Oct 4, Days 15–19)</div>
+<div class="tl">
+  <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Day 15–16</div><div class="tl-label">Record demo video (3 min)</div><div class="tl-body">Script: Problem (30s) → Upload a kurta/product photo (15s) → Watch pipeline run (30s) → Show all 5 platform outputs (30s) → Background replace wow moment (20s) → Gallery + search (15s) → Caption copy (15s) → Download all (15s) → Pitch close (20s). Use OBS or Loom.</div></div>
+  <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Day 17</div><div class="tl-label">Write README</div><div class="tl-body">Cover: Track (3), Problem, Target user, How Cloudinary is used (list every feature), Setup instructions, .env.example, Live demo link. Clear and detailed wins points.</div></div>
+  <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Day 18</div><div class="tl-label">Deploy to Vercel</div><div class="tl-body">vercel.com → import GitHub repo → set env vars (NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, NEXT_PUBLIC_SUPABASE_URL, etc.) → deploy. Test live URL.</div></div>
+  <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Day 19</div><div class="tl-label">Complete survey + submit</div><div class="tl-body">cld.media/hackathon-survey FIRST. Then submit: live URL + GitHub + README + demo video + team details. Submit before Oct 4 midnight.</div></div>
+</div>
+
+</div>
+
+<!-- TAB 1: SETUP STEPS -->
+<div class="tab-panel" id="panel-1">
+
+<div class="section-hd">EXACT COMMANDS — run in order</div>
+
+<div class="card card-accent-blue">
+  <div style="font-size:13px;font-weight:500;margin-bottom:.4rem">1. Create Next.js project</div>
+  <div class="code-block">npx create-next-app@latest visualcraft --typescript --tailwind --app --src-dir
+cd visualcraft</div>
+</div>
+
+<div class="card card-accent-blue">
+  <div style="font-size:13px;font-weight:500;margin-bottom:.4rem">2. Install all dependencies</div>
+  <div class="code-block">npm install next-cloudinary cloudinary @supabase/supabase-js @supabase/auth-helpers-nextjs @google/generative-ai jszip file-saver lucide-react clsx tailwind-merge @radix-ui/react-dialog @radix-ui/react-tabs framer-motion</div>
+</div>
+
+<div class="card card-accent-green">
+  <div style="font-size:13px;font-weight:500;margin-bottom:.4rem">3. Create .env.local file (NEVER commit this)</div>
+  <div class="code-block"># Cloudinary
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+CLOUDINARY_URL=cloudinary://api_key:api_secret@cloud_name
+
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+
+# Gemini
+GEMINI_API_KEY=your_gemini_api_key
+
+# App
+NEXT_PUBLIC_APP_URL=http://localhost:3000</div>
+</div>
+
+<div class="card card-accent-green">
+  <div style="font-size:13px;font-weight:500;margin-bottom:.4rem">4. Create .env.example (COMMIT THIS — no real values)</div>
+  <div class="code-block">NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+CLOUDINARY_URL=
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+GEMINI_API_KEY=
+NEXT_PUBLIC_APP_URL=</div>
+</div>
+
+<div class="card card-accent-amber">
+  <div style="font-size:13px;font-weight:500;margin-bottom:.4rem">5. Add to .gitignore (confirm it's there)</div>
+  <div class="code-block">.env.local
+.env.*.local
+*.env</div>
+</div>
+
+<div class="card card-accent-purple">
+  <div style="font-size:13px;font-weight:500;margin-bottom:.4rem">6. Supabase table — run in SQL editor</div>
+  <div class="code-block">create table uploads (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users,
+  cloudinary_public_id text not null,
+  original_url text,
+  tags text[],
+  platform_urls jsonb,
+  captions jsonb,
+  created_at timestamptz default now()
+);</div>
+</div>
+
+<div class="card card-accent-purple">
+  <div style="font-size:13px;font-weight:500;margin-bottom:.4rem">7. Cloudinary — set upload preset (in dashboard)</div>
+  <div class="step-body">Settings → Upload → Add upload preset → Name: <code>visualcraft_unsigned</code> → Signing mode: Unsigned → Save. Use this preset in the upload widget.</div>
+</div>
+
+<div class="card card-accent-gray">
+  <div style="font-size:13px;font-weight:500;margin-bottom:.4rem">8. Vercel deployment env vars</div>
+  <div class="step-body">In Vercel project → Settings → Environment Variables → add all vars from .env.local. Set NEXT_PUBLIC_APP_URL to your .vercel.app URL.</div>
+</div>
+
+<div class="section-hd">PAGE STRUCTURE TO BUILD</div>
+<div class="grid2">
+  <div class="card"><div style="font-size:12px;font-weight:500">app/page.tsx</div><div style="font-size:11px;color:var(--text-secondary);margin-top:3px">Landing — hero, how it works, demo CTA</div></div>
+  <div class="card"><div style="font-size:12px;font-weight:500">app/upload/page.tsx</div><div style="font-size:11px;color:var(--text-secondary);margin-top:3px">Upload widget + pipeline progress + results</div></div>
+  <div class="card"><div style="font-size:12px;font-weight:500">app/gallery/page.tsx</div><div style="font-size:11px;color:var(--text-secondary);margin-top:3px">User's past uploads with Search API</div></div>
+  <div class="card"><div style="font-size:12px;font-weight:500">app/api/process/route.ts</div><div style="font-size:11px;color:var(--text-secondary);margin-top:3px">Server-side Cloudinary transformations</div></div>
+  <div class="card"><div style="font-size:12px;font-weight:500">app/api/captions/route.ts</div><div style="font-size:11px;color:var(--text-secondary);margin-top:3px">Gemini caption generation endpoint</div></div>
+  <div class="card"><div style="font-size:12px;font-weight:500">app/api/search/route.ts</div><div style="font-size:11px;color:var(--text-secondary);margin-top:3px">Cloudinary Search API wrapper</div></div>
+</div>
+
+</div>
+
+<!-- TAB 2: CLOUDINARY FEATURES -->
+<div class="tab-panel" id="panel-2">
+
+<div class="hl-blue"><div class="hl-text-b">You must use Cloudinary as active infrastructure — not just hosting. Below is every feature you'll implement. Each one is demo-able and scores points.</div></div>
+
+<div class="section-hd">CORE FEATURES (must implement)</div>
+
+<div class="card card-accent-blue">
+  <div class="feat-row"><span class="feat-name">Upload API</span><span class="feat-api">CldUploadWidget</span><span class="feat-desc">Drag-drop or camera upload. Use unsigned preset. Triggers entire pipeline.</span></div>
+  <div class="feat-row"><span class="feat-name">Background removal</span><span class="feat-api">e_background_removal</span><span class="feat-desc">Built-in AI, no add-on needed. Applied as first transformation step automatically.</span></div>
+  <div class="feat-row"><span class="feat-name">Content-aware crop</span><span class="feat-api">g_auto:subject</span><span class="feat-desc">Keeps product centered when resizing to different aspect ratios.</span></div>
+  <div class="feat-row"><span class="feat-name">Format optimization</span><span class="feat-api">f_auto,q_auto</span><span class="feat-desc">Auto WebP/AVIF, auto quality. Every delivered image uses this.</span></div>
+  <div class="feat-row"><span class="feat-name">Auto-tagging</span><span class="feat-api">auto_tagging: 0.6</span><span class="feat-desc">AI detects product type on upload. Tags drive categorization + search.</span></div>
+  <div class="feat-row"><span class="feat-name">Structured metadata</span><span class="feat-api">context param</span><span class="feat-desc">Store platform=instagram, seller=xyz as metadata on each asset.</span></div>
+  <div class="feat-row"><span class="feat-name">Search API</span><span class="feat-api">cloudinary.search()</span><span class="feat-desc">Query by tags, metadata, folder. Powers the gallery page filter.</span></div>
+  <div class="feat-row"><span class="feat-name">Named transformations</span><span class="feat-api">t_instagram_square</span><span class="feat-desc">Pre-register platform presets in dashboard. Apply by name in URL.</span></div>
+  <div class="feat-row"><span class="feat-name">CDN optimized delivery</span><span class="feat-api">CldImage</span><span class="feat-desc">All images delivered via Cloudinary CDN. Fast global delivery.</span></div>
+</div>
+
+<div class="section-hd">WOW FEATURES (differentiates from other teams)</div>
+
+<div class="card card-accent-purple">
+  <div class="feat-row"><span class="feat-name">Generative fill</span><span class="feat-api">b_gen_fill</span><span class="feat-desc">Extend portrait product photo to landscape 1200×628 for Facebook/Google ads. AI fills the empty space naturally.</span></div>
+  <div class="feat-row"><span class="feat-name">Background replace</span><span class="feat-api">e_gen_background_replace</span><span class="feat-desc">Swap background with "white studio", "wooden table", "outdoor market" prompt. Huge visual impact in demo.</span></div>
+  <div class="feat-row"><span class="feat-name">Generative recolor</span><span class="feat-api">e_gen_recolor</span><span class="feat-desc">Optional: recolor product to different color variants. e.g. red kurta → blue kurta variant.</span></div>
+</div>
+
+<div class="section-hd">PLATFORM PRESETS — create these named transformations in Cloudinary dashboard</div>
+
+<div class="grid2">
+  <div class="card"><div style="font-size:12px;font-weight:500">t_instagram_square</div><div style="font-size:11px;color:var(--text-secondary);margin-top:3px">c_fill, g_auto:subject, w_1080, h_1080, e_background_removal, b_white, f_auto, q_auto</div></div>
+  <div class="card"><div style="font-size:12px;font-weight:500">t_whatsapp_thumb</div><div style="font-size:11px;color:var(--text-secondary);margin-top:3px">c_fill, g_auto:subject, w_800, h_800, e_background_removal, b_white, f_auto, q_auto</div></div>
+  <div class="card"><div style="font-size:12px;font-weight:500">t_flipkart_listing</div><div style="font-size:11px;color:var(--text-secondary);margin-top:3px">c_pad, g_auto:subject, w_500, h_500, b_white, f_jpg, q_auto</div></div>
+  <div class="card"><div style="font-size:12px;font-weight:500">t_facebook_banner</div><div style="font-size:11px;color:var(--text-secondary);margin-top:3px">c_pad, ar_1.91:1, w_1200, b_gen_fill, f_auto, q_auto</div></div>
+  <div class="card"><div style="font-size:12px;font-weight:500">t_amazon_main</div><div style="font-size:11px;color:var(--text-secondary);margin-top:3px">c_pad, g_auto:subject, w_2000, h_2000, b_white, f_jpg, q_100</div></div>
+  <div class="card"><div style="font-size:12px;font-weight:500">t_meesho_listing</div><div style="font-size:11px;color:var(--text-secondary);margin-top:3px">c_fill, g_auto:subject, w_600, h_800, e_background_removal, b_white, f_auto, q_auto</div></div>
+</div>
+
+<div class="section-hd">API ROUTE CODE PATTERN</div>
+<div class="code-block" style="font-size:11px">// app/api/process/route.ts
+import { v2 as cloudinary } from 'cloudinary';
+
+cloudinary.config({
+  cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+export async function POST(req: Request) {
+  const { publicId } = await req.json();
+
+  // Apply all platform transformations
+  const platforms = {
+    instagram: cloudinary.url(publicId, {
+      transformation: [{ effect: 'background_removal' },
+        { width: 1080, height: 1080, crop: 'fill', gravity: 'auto:subject',
+          background: 'white', fetch_format: 'auto', quality: 'auto' }]
+    }),
+    facebook_banner: cloudinary.url(publicId, {
+      transformation: [{ effect: 'background_removal' },
+        { aspect_ratio: '1.91:1', width: 1200, crop: 'pad',
+          background: 'gen_fill', fetch_format: 'auto', quality: 'auto' }]
+    }),
+    // ... other platforms
+  };
+  return Response.json({ platforms });
+}</div>
+
+</div>
+
+<!-- TAB 3: ANTIGRAVITY PROMPT -->
+<div class="tab-panel" id="panel-3">
+
+<div class="hl-blue"><div class="hl-text-b">Copy this entire prompt. Paste into Antigravity. It will scaffold the full project — all pages, components, API routes, Cloudinary integration, Supabase wiring, and the handcrafted light theme UI using the Stitch MCP.</div></div>
+
+<div class="prompt-wrap" id="ag-prompt">Build a complete Next.js 14 (App Router, TypeScript, Tailwind CSS) full-stack web application called "VisualCraft" — an AI-powered product photography platform for Indian D2C sellers (Meesho, Instagram shops, Flipkart sellers). The core value: seller uploads a raw phone photo of their product → VisualCraft auto-removes background, generates platform-ready images for Instagram, WhatsApp, Flipkart, Facebook Ads, Amazon, Meesho, adds AI-generated captions, and lets them download all variants with one click.
+
+---
+
+## THEME & DESIGN (Critical — use Stitch MCP for UI components)
+
+Use the Stitch MCP to generate and wire UI components. The design must look like it was handcrafted by a human designer — NOT an AI-generated template.
+
+Design direction:
+- Light theme only, clean and airy
+- Color palette: off-white background (#FAFAF8), warm gray surfaces (#F4F3F1), slate text (#1C1C1A), blue accent (#2563EB), subtle green for success (#16A34A), amber for warnings (#D97706)
+- Typography: Inter for UI, JetBrains Mono for code/API snippets — use next/font
+- Visual feel: tech product but warm and approachable. Like Linear or Vercel's docs but with an Indian handcraft warmth
+- Cards with 0.5px borders (#E5E4E1), 10px border-radius, no heavy shadows — use very subtle box-shadow: 0 1px 3px rgba(0,0,0,0.06)
+- Buttons: filled blue (#2563EB) for primary, outlined slate for secondary. Rounded-md. No rounded-full pill buttons
+- Upload zone: large dashed border (#CBD5E1) with a dashed pattern on hover → solid blue border. Show a phone icon + "Drop your product photo here" in Hindi + English ("अपनी product photo यहाँ डालें")
+- Progress steps: simple numbered steps row with connecting lines. Not animated circles — just clean 1→2→3→4→5 with text labels below
+- Platform output cards: clean white cards in a 2-col or 3-col grid. Each card shows platform logo icon (emoji ok), image preview via CldImage, platform name, dimensions, a copy-URL button and a download button
+- No gradients. No glassmorphism. No dark mode toggle. Just clean flat light UI.
+- Section dividers: thin 0.5px lines (#E5E4E1). No colored banners.
+- Footer: minimal. Just logo + "Built for HackIndia × Cloudinary Pixels to Products 2026" + GitHub link
+
+---
+
+## FOLDER STRUCTURE TO CREATE
+
+```
+src/
+  app/
+    page.tsx                    (Landing page)
+    upload/page.tsx             (Upload + pipeline + results)
+    gallery/page.tsx            (Gallery with search/filter)
+    about/page.tsx              (How it works — for demo)
+    layout.tsx
+    globals.css
+  components/
+    ui/                         (Stitch MCP components here)
+    UploadZone.tsx
+    PipelineProgress.tsx
+    PlatformCard.tsx
+    CaptionPanel.tsx
+    TagCloud.tsx
+    GalleryGrid.tsx
+    BackgroundPicker.tsx
+    DownloadAllButton.tsx
+    Navbar.tsx
+    Footer.tsx
+  lib/
+    cloudinary.ts               (Cloudinary config + helpers)
+    supabase.ts                 (Supabase client)
+    gemini.ts                   (Gemini client + caption prompt)
+    transformations.ts          (All platform transformation configs)
+    utils.ts
+  app/api/
+    process/route.ts            (Main Cloudinary pipeline API)
+    captions/route.ts           (Gemini caption generation)
+    search/route.ts             (Cloudinary Search API)
+    background/route.ts         (Background replace API)
+    download/route.ts           (ZIP download handler)
+```
+
+---
+
+## ALL CLOUDINARY FEATURES TO IMPLEMENT (cover every single one)
+
+### 1. Upload
+- Use CldUploadWidget from next-cloudinary
+- Upload preset: "visualcraft_unsigned" (unsigned)
+- On upload success: trigger /api/process with the returned public_id
+- Show upload progress percentage
+- Allow multiple files (max 5 at once)
+- Accept: image/jpeg, image/png, image/webp
+
+### 2. Background Removal
+- Apply e_background_removal as first transformation step
+- Show before/after toggle slider component
+- Display "Background removed in Xs" timing
+
+### 3. Platform-Specific Named Transformations
+Register and use these named transformations via Cloudinary URL:
+- t_instagram_square: c_fill,g_auto:subject,w_1080,h_1080,e_background_removal,b_white,f_auto,q_auto
+- t_whatsapp_product: c_fill,g_auto:subject,w_800,h_800,e_background_removal,b_white,f_auto,q_auto
+- t_flipkart_listing: c_pad,g_auto:subject,w_500,h_500,b_white,f_jpg,q_auto
+- t_amazon_main: c_pad,g_auto:subject,w_2000,h_2000,b_white,f_jpg,q_100
+- t_facebook_banner: c_pad,ar_1.91:1,w_1200,b_gen_fill,f_auto,q_auto
+- t_meesho_portrait: c_fill,g_auto:subject,w_600,h_800,e_background_removal,b_white,f_auto,q_auto
+
+### 4. Generative Fill
+- For the Facebook banner: use b_gen_fill to extend portrait product to 1.91:1 landscape
+- Show "AI extended" badge on the Facebook banner card
+
+### 5. Generative Background Replace
+- BackgroundPicker component with 6 preset prompts:
+  - "clean white studio background"
+  - "wooden table with soft natural light"
+  - "outdoor Indian market stall"
+  - "modern minimalist shelf"
+  - "gradient pastel background"
+  - "bokeh blurred lifestyle background"
+- User picks a style → call /api/background with {publicId, prompt}
+- Apply e_gen_background_replace:prompt_<encoded_prompt>
+- Show result in a "Background Style" preview panel
+
+### 6. AI Auto-Tagging
+- On upload: server-side auto_tagging parameter with confidence 0.6
+- Display detected tags as pill badges in TagCloud component
+- Tags used to populate category metadata
+
+### 7. Structured Metadata
+- Set context on upload: platform_name, seller_category, upload_source
+- Metadata shown in the asset detail panel
+
+### 8. Search API
+- /api/search endpoint: query cloudinary.search() with expression builder
+- Filter by: tags, resource_type, created_at range
+- Gallery page uses this to list user's uploads
+- Search bar in gallery: type a tag → live filter results
+
+### 9. Content-Aware Cropping
+- Use gravity: "auto:subject" in all platform transformations
+- Show a "smart crop" indicator label on each platform card
+
+### 10. Optimized Delivery
+- All CldImage components use: format="auto" quality="auto"
+- Show file size comparison: original vs optimized (fetch headers)
+
+### 11. Image Overlay (Watermark)
+- Optional watermark: text overlay "VisualCraft" in bottom-right
+- Cloudinary transformation: l_text:Arial_16:VisualCraft,g_south_east,o_30
+
+---
+
+## API ROUTES — implement these exactly
+
+### /api/process (POST)
+Input: { publicId: string }
+- Use cloudinary SDK server-side
+- Generate all 6 platform URLs using cloudinary.url() with transformation chains
+- Call Cloudinary analyze/auto-tag (admin API)
+- Save result to Supabase uploads table
+- Return: { platforms: {instagram, whatsapp, flipkart, amazon, facebook, meesho}, tags: string[], originalUrl: string }
+
+### /api/captions (POST)
+Input: { tags: string[], platform: string }
+- Build Gemini prompt: "You are a product listing expert for Indian D2C sellers. Based on these auto-detected tags: [tags], write 3 variations of [platform] captions in a mix of Hindi-English (Hinglish). Each under 150 chars for Instagram, 80 chars for WhatsApp. Include 3-5 relevant hashtags."
+- Return: { captions: string[] }
+
+### /api/background (POST)
+Input: { publicId: string, prompt: string }
+- Generate URL with e_gen_background_replace:prompt_<encoded>
+- Return: { url: string }
+
+### /api/search (GET)
+Input: ?q=tag:kurta&max_results=20
+- cloudinary.search().expression(q).max_results(n).execute()
+- Return: { resources: CloudinaryResource[] }
+
+### /api/download (POST)
+Input: { urls: string[], filename: string }
+- Fetch all URLs server-side → buffer
+- JSZip them → return as application/zip
+- Return ZIP blob
+
+---
+
+## PAGES — implement these exactly
+
+### Landing page (/)
+- Navbar: logo "VisualCraft" + nav links (Home, How it works, Gallery, GitHub) + "Try Free" CTA button
+- Hero section:
+  - Left: H1 "Turn phone photos into store-ready product images" + subtext "Upload → AI removes background → 6 platform-ready images in 10 seconds. Free for sellers."
+  - Right: animated before/after mockup showing raw phone photo → 6 platform cards
+- How it works: 5-step horizontal flow (Upload → Remove BG → Smart Crop → Platform Resize → Download)
+- Cloudinary feature showcase: grid of 6 cards showing each AI feature with icon + 1-line description
+- Testimonial strip: 3 fake but believable testimonials from "Priya from Chennai", "Rahul, Meesho seller", "Ananya's Boutique"
+- CTA banner: "Start processing your first product photo — no signup needed"
+- Footer
+
+### Upload page (/upload)
+Layout: left panel (upload + pipeline) | right panel (results)
+
+Left panel:
+- Large upload zone (UploadZone component)
+- PipelineProgress: 5 steps shown as: Uploading → Removing Background → Detecting Product → Generating Variants → Adding Captions
+- Each step shows a spinner while active, checkmark when done, with a small timing label
+
+Right panel (shows after processing):
+- Before/after image toggle at top
+- Tag cloud from auto-detection
+- BackgroundPicker (6 style presets)
+- Platform cards grid (2 cols): Instagram, WhatsApp, Flipkart, Amazon, Facebook, Meesho
+  - Each card: platform name + icon, dimensions badge, preview thumbnail via CldImage, Copy URL button, Download button, "AI extended" badge if gen_fill applied
+- Caption panel below: tabs for each platform, 3 caption variants each with copy button
+- DownloadAllButton: "Download All (6 images + captions)" triggers /api/download
+
+### Gallery page (/gallery)
+- Search bar at top: "Search by product type, tag..." → calls /api/search
+- Filter pills: All | Clothing | Electronics | Accessories | Home | Food
+- Grid: CldImage thumbnails in masonry or 3-col grid
+- Click thumbnail → expand modal showing all 6 platform variants for that upload
+
+### About/How it works page (/about)
+- Detailed explanation of each Cloudinary feature used
+- Architecture diagram (simple SVG or image)
+- README-style technical documentation embedded in the page
+- "This project uses: Cloudinary Upload API, AI Background Removal, Generative Fill, Gen Background Replace, Auto-Tagging, Search API, Named Transformations, Optimized Delivery"
+
+---
+
+## COMPONENT SPECS
+
+### UploadZone.tsx
+- Uses CldUploadWidget
+- Large dashed border box (min-height: 240px)
+- Shows file preview thumbnails after selection
+- Drag and drop enabled
+- On success callback: sets uploadedPublicId state → triggers pipeline
+
+### PipelineProgress.tsx
+Props: { step: number, timing: Record<string, number> }
+Steps array: ['Uploading', 'Removing Background', 'Smart Cropping', 'Generating Variants', 'Adding Captions']
+Shows step number + label + timing in seconds when complete
+
+### PlatformCard.tsx
+Props: { platform: string, url: string, dimensions: string, isGenFill?: boolean }
+- White card, subtle border
+- CldImage for preview (src from Cloudinary URL, width/height from platform spec)
+- Platform name + dimensions badge
+- Two buttons: Copy URL | Download
+- "AI Generated" badge if isGenFill
+
+### BackgroundPicker.tsx
+Props: { publicId: string, onResult: (url) => void }
+- 6 style option buttons in a 2x3 grid
+- Loading state while API call runs
+- Shows result preview when done
+
+### CaptionPanel.tsx
+Props: { tags: string[], platforms: string[] }
+- Tabs: Instagram | WhatsApp | Flipkart | Facebook
+- Each tab: 3 caption variants with copy button
+- Character count shown per caption
+
+### TagCloud.tsx
+Props: { tags: string[] }
+- Pill badges for each detected tag
+- Blue for high confidence, gray for lower
+- "Detected by Cloudinary AI" label
+
+### DownloadAllButton.tsx
+Props: { urls: string[], captions: Record<string, string[]> }
+- Single button: "Download All (6 images + captions .txt)"
+- Calls /api/download → triggers browser download
+- Shows progress spinner during ZIP creation
+
+---
+
+## ENV VARIABLES NEEDED
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
+CLOUDINARY_API_KEY
+CLOUDINARY_API_SECRET
+NEXT_PUBLIC_SUPABASE_URL
+NEXT_PUBLIC_SUPABASE_ANON_KEY
+SUPABASE_SERVICE_ROLE_KEY
+GEMINI_API_KEY
+
+---
+
+## SUPABASE SCHEMA
+Table: uploads
+- id: uuid (pk)
+- user_session_id: text (anonymous session, no auth required for MVP)
+- cloudinary_public_id: text
+- original_url: text
+- platform_urls: jsonb { instagram, whatsapp, flipkart, amazon, facebook, meesho }
+- tags: text[]
+- captions: jsonb { instagram: string[], whatsapp: string[], flipkart: string[], facebook: string[] }
+- background_style: text (selected background preset name)
+- created_at: timestamptz
+
+---
+
+## README.md — generate this file exactly
+
+# VisualCraft — AI Product Photography for D2C Sellers
+
+**HackIndia × Cloudinary Pixels to Products 2026 | Team Elite | Track 3**
+
+## Problem
+Indian D2C sellers on Meesho, Instagram, and Flipkart need professional product photos but can't afford studio shoots (₹3000-5000 per session). They take photos on their phones but these aren't suitable for platform listings.
+
+## Solution
+VisualCraft is an AI pipeline powered by Cloudinary that transforms any raw product photo into 6 platform-ready images in under 10 seconds — completely free.
+
+## Cloudinary Features Used
+- Upload API with CldUploadWidget
+- AI Background Removal (e_background_removal)
+- Content-Aware Cropping (g_auto:subject)
+- Generative Fill for banner extension (b_gen_fill)
+- Generative Background Replace (e_gen_background_replace)
+- Auto-Tagging (auto_tagging: 0.6)
+- Structured Metadata (context parameter)
+- Named Transformations (6 platform presets)
+- Search API (cloudinary.search())
+- Optimized Delivery (f_auto, q_auto)
+- CDN delivery via CldImage (next-cloudinary)
+
+## Tech Stack
+Next.js 14 (App Router) | TypeScript | Tailwind CSS | Cloudinary | Supabase | Google Gemini API | Vercel
+
+## Setup
+[Setup instructions with .env.example reference]
+
+## Live Demo
+[Vercel URL]
+
+## Demo Video
+[YouTube/Drive link]
+
+---
+
+## IMPORTANT NOTES FOR ANTIGRAVITY
+1. Use `next-cloudinary` package for all Cloudinary operations in components (CldImage, CldUploadWidget)
+2. Use `cloudinary` (v2 SDK) only in API routes (server-side) for transformations and admin operations
+3. Never import cloudinary SDK in client components
+4. All transformation URLs built server-side in /api/process
+5. Use Tailwind classes throughout — no inline styles except where absolutely needed
+6. Keep all components in src/components
+7. Add loading skeletons for all async states
+8. Handle errors gracefully — show user-friendly messages
+9. The app should work without login (anonymous sessions via Supabase)
+10. Optimize for demo: the upload → result flow must complete in under 15 seconds on a good connection</div>
+<button class="prompt-copy" onclick="copyPrompt()">Copy Full Antigravity Prompt</button>
+
+</div>
+
+<!-- TAB 4: SUBMISSION CHECKLIST -->
+<div class="tab-panel" id="panel-4">
+
+<div class="hl-warn"><div class="hl-text-w">Complete the feedback survey at cld.media/hackathon-survey BEFORE submitting. Without it, you are ineligible for prizes even with a perfect project.</div></div>
+
+<div class="section-hd">REQUIRED SUBMISSION ITEMS</div>
+<div class="card">
+  <div class="chk"><div class="chk-box"></div><div>Live working demo URL (Vercel deploy)</div></div>
+  <div class="chk"><div class="chk-box"></div><div>Public GitHub repo with all code</div></div>
+  <div class="chk"><div class="chk-box"></div><div>README.md explaining track, problem, Cloudinary usage, setup instructions</div></div>
+  <div class="chk"><div class="chk-box"></div><div>Demo video 2–4 minutes (YouTube or Drive link)</div></div>
+  <div class="chk"><div class="chk-box"></div><div>Team details (all members registered individually)</div></div>
+  <div class="chk"><div class="chk-box"></div><div>Cloudinary feedback survey completed at cld.media/hackathon-survey</div></div>
+</div>
+
+<div class="section-hd">WHAT TOP 10 JUDGES LOOK FOR (from Cloudinary's team)</div>
+<div class="grid2">
+  <div class="card card-accent-blue"><div style="font-size:12px;font-weight:500">Cloudinary depth</div><div style="font-size:11px;color:var(--text-secondary);margin-top:3px">Uses 5+ distinct Cloudinary features, not just upload+deliver</div></div>
+  <div class="card card-accent-green"><div style="font-size:12px;font-weight:500">Demo works on first click</div><div style="font-size:11px;color:var(--text-secondary);margin-top:3px">Judges click your demo URL. If it errors, you lose. Test 10 times before submitting.</div></div>
+  <div class="card card-accent-purple"><div style="font-size:12px;font-weight:500">Clear product story</div><div style="font-size:11px;color:var(--text-secondary);margin-top:3px">Who is it for, what problem, how does it solve it — in 30 seconds of reading README</div></div>
+  <div class="card card-accent-amber"><div style="font-size:12px;font-weight:500">Creative use of AI features</div><div style="font-size:11px;color:var(--text-secondary);margin-top:3px">Generative fill, background replace = wow factor. Any team doing only basic transforms = lower score</div></div>
+</div>
+
+<div class="section-hd">DEMO VIDEO SCRIPT (3 min exactly)</div>
+<div class="tl">
+  <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">0:00–0:30</div><div class="tl-label">Problem statement</div><div class="tl-body">Show a real blurry phone photo of a kurta/product. Say "This seller needs professional photos for 6 platforms. A studio shoot costs ₹3000+. VisualCraft does it in 10 seconds, free."</div></div>
+  <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">0:30–0:50</div><div class="tl-label">Upload</div><div class="tl-body">Drag the photo into VisualCraft's upload zone. Show the pipeline progress steps animating.</div></div>
+  <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">0:50–1:20</div><div class="tl-label">Background removal + tags</div><div class="tl-body">Show before/after toggle. Show auto-detected tags appearing: "kurta, ethnic wear, women's clothing". This is Cloudinary AI doing real work.</div></div>
+  <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">1:20–2:00</div><div class="tl-label">All 6 platform outputs</div><div class="tl-body">Pan through the 6 platform cards — Instagram square, WhatsApp, Flipkart, Amazon, Facebook banner (show the gen_fill extended image), Meesho portrait.</div></div>
+  <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">2:00–2:20</div><div class="tl-label">Background replace wow moment</div><div class="tl-body">Click "Wooden table" preset → show the AI-replaced background. This is the strongest visual moment in your demo.</div></div>
+  <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">2:20–2:40</div><div class="tl-label">Captions + gallery</div><div class="tl-body">Show AI-generated Hinglish captions per platform. Quick cut to gallery page showing past uploads filtered by tag.</div></div>
+  <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">2:40–3:00</div><div class="tl-label">Download + close</div><div class="tl-body">Click "Download All" → ZIP downloads. Close with: "Built on Cloudinary. 11 AI features. 10 seconds. Free for every seller in India."</div></div>
+</div>
+
+<div class="section-hd">CRITICAL THINGS TO NOT FORGET</div>
+<div class="hl-warn">
+  <div class="hl-text-w">
+    ✗ .env.local must NEVER be committed — only .env.example goes to GitHub<br>
+    ✗ Upload preset must be set to "Unsigned" in Cloudinary dashboard for client-side uploads<br>
+    ✗ Test demo video on another device — make sure font rendering and images load<br>
+    ✗ Add problem statement in HackIndia team profile before submission<br>
+    ✗ Keep Cloudinary free tier limits in mind: 25 credits/month. Use transformation caching.<br>
+    ✗ The ZIP download endpoint must run server-side — not in browser (CORS issues with Cloudinary URLs)
+  </div>
+</div>
+
+</div>
+
+</div>
+
+<script>
+function switchTab(i){
+  document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('active',j===i));
+  document.querySelectorAll('.tab-panel').forEach((p,j)=>p.classList.toggle('active',j===i));
+}
+function copyPrompt(){
+  const txt=document.getElementById('ag-prompt').innerText;
+  navigator.clipboard.writeText(txt).then(()=>{
+    const btn=document.querySelector('.prompt-copy');
+    btn.textContent='✓ Copied!';
+    setTimeout(()=>btn.textContent='Copy Full Antigravity Prompt',2000);
+  });
+}
+</script>

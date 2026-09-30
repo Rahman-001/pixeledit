@@ -1,0 +1,154 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =============================================
+   Design Tokens
+   ============================================= */
+:root {
+  --background: #FAFAF8;
+  --surface: #F4F3F1;
+  --border: #E5E4E1;
+  --border-focus: #CBD5E1;
+  --foreground: #1C1C1A;
+  --muted: #6B7280;
+  --subtle: #9CA3AF;
+  --blue: #2563EB;
+  --blue-hover: #1D4ED8;
+  --blue-light: #EFF6FF;
+  --green: #16A34A;
+  --green-light: #F0FDF4;
+  --amber: #D97706;
+  --amber-light: #FFFBEB;
+  --red: #DC2626;
+  --red-light: #FEF2F2;
+}
+
+/* =============================================
+   Base Styles
+   ============================================= */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+
+  /* Thin scrollbar */
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--surface);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-focus);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--muted);
+  }
+
+  /* Focus ring */
+  *:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Section divider */
+  .section-divider {
+    height: 0.5px;
+    background-color: var(--border);
+  }
+}
+
+/* =============================================
+   Component Utilities
+   ============================================= */
+@layer components {
+  /* Card */
+  .card {
+    @apply bg-white border border-border rounded-xl shadow-card;
+  }
+
+  /* Input */
+  .input {
+    @apply w-full px-3 py-2 text-sm bg-background border border-border rounded-md 
+           placeholder:text-subtle text-foreground
+           focus:outline-none focus:ring-2 focus:ring-blue/20 focus:border-blue
+           transition-all duration-150;
+  }
+
+  /* Button variants */
+  .btn-primary {
+    @apply px-4 py-2 text-sm font-medium bg-blue text-white rounded-md 
+           hover:bg-blue-hover transition-colors duration-150 
+           disabled:opacity-60 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply px-4 py-2 text-sm font-medium border border-border text-foreground rounded-md
+           hover:bg-surface transition-colors duration-150
+           disabled:opacity-60 disabled:cursor-not-allowed;
+  }
+
+  /* Badge */
+  .badge {
+    @apply px-2 py-0.5 text-xs font-medium rounded-full;
+  }
+
+  .badge-blue {
+    @apply badge bg-blue-light text-blue border border-blue/20;
+  }
+
+  .badge-green {
+    @apply badge bg-green-light text-green border border-green/20;
+  }
+
+  .badge-amber {
+    @apply badge bg-amber-light text-amber border border-amber/20;
+  }
+}
+
+/* =============================================
+   Animation Utilities
+   ============================================= */
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.4s ease-out;
+  }
+
+  .animate-pulse-soft {
+    animation: pulseSoft 2s ease-in-out infinite;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseSoft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
